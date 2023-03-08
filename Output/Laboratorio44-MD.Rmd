@@ -1,0 +1,137 @@
+---
+title: "Laboratorio44-MD"
+author: "Leislie R. Manjarrez O."
+date: "2023-03-08"
+output: html_document
+---
+
+Hecho con gusto por Leislie R. Manjarrez O.
+
+Laboratorio 44- Mapa de calor con BD en R
+
+Preguntamos en R respecto a la BD que utilizaremos
+```{r}
+?mtcars
+```
+
+Caracteristicas muy variables que no estan normalizadas ni son las mismas medidas
+
+Llamamos a la BD para observar las caracteristicas en la consola
+```{r}
+mtcars
+```
+
+Identificacion del tipo de dato que es mtcars
+```{r}
+class(mtcars)
+```
+
+Convertimos el dataframe a una matriz
+```{r}
+mtcars_matriz <- data.matrix(mtcars)
+```
+
+Ver los datos en matriz
+```{r}
+head(mtcars_matriz)
+```
+
+Verificar que los datos estan en matriz
+```{r}
+class(mtcars_matriz)
+```
+
+Crear primer grafico de calor
+```{r}
+heatmap(mtcars_matriz)
+```
+
+El resultado es que se grafican los renglones y no las columnas por lo que el grafo no nos dice mucho. Para conocer mas sobre heatmap puede preguntarse
+```{r}
+?heatmap
+```
+
+Hacer un nuevo mapa de calor graficando las columnas y no renglones
+```{r}
+heatmap(mtcars_matriz, scale = "colum")
+```
+
+Hacer una paleta personalizada de colores
+```{r}
+colores_blue <- colorRampPalette(c("lightblue", "cornflowerblue", "navyblue"))(256)
+```
+
+Volvemos a graficar considerando la paleta de colores creada
+```{r}
+heatmap(mtcars_matriz, 
+        scale = "colum",
+        col = colores_blue)
+```
+
+Graficar eliminando el dendrograma horizontal por no contar con datos normalizados
+```{r}
+heatmap(mtcars_matriz, 
+        scale = "colum",
+        col = colores_blue,
+        Colv = NA,
+        margins = c(5,10),
+        xlab = "Especificación de características",
+        ylab = "Modelos de auto",
+        main = "Mapa de Calor")
+```
+
+El orden de los autos es conforme al dendrograma y no se modifica el orden de las columnas como puede verse con el siguiente comando. Los coches se ordenaron de acuerdo al clusteo presentado en el dendrograma
+```{r}
+colnames(mtcars_matriz)
+```
+
+Para cambiar el color del mapa de color instalamos primero la paqueteria
+install.packages("viridis")
+
+Llamamos a la libreria de la paqueteria
+```{r}
+library(viridis)
+```
+
+Utilizamos la paleta viridis
+```{r}
+heatmap(mtcars_matriz, 
+        scale = "colum",
+        col = viridis_pal(option = "viridis") (6),
+        Colv = NA,
+        margins = c(5,10),
+        xlab = "Especificación de características",
+        ylab = "Modelos de auto",
+        main = "Mapa de Calor")
+```
+
+Utilizamos la paleta magma
+```{r}
+heatmap(mtcars_matriz, 
+        scale = "colum",
+        col = viridis_pal(option = "magma") (6),
+        Colv = NA,
+        margins = c(5,10),
+        xlab = "Especificación de características",
+        ylab = "Modelos de auto",
+        main = "Mapa de Calor")
+```
+
+Utilizamos la paleta rainbow
+```{r}
+heatmap(mtcars_matriz, 
+        scale = "colum",
+        col = rainbow (6),
+        Colv = NA,
+        margins = c(5,10),
+        xlab = "Especificación de características",
+        ylab = "Modelos de auto",
+        main = "Mapa de Calor")
+```
+
+Para conocer cuales son los valores mas altos y bajos corremos el siguiente comando
+```{r}
+image(1:6,1,as.matrix(1:6), col = rainbow (6), xlab="Leyenda", ylab="", xaxt="n", yaxt="n", bty="n")
+```
+
+En este caso el color rojo es el mas bajo y el morado el mas alto.
